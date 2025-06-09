@@ -5,5 +5,5 @@ using System.Threading.Tasks;
 
 namespace CarsApi.Application.DTOs
 {
-    public record BrandResponseDto(string Name);
+    public record BrandResponseDto(int Id,string Name);
 }
