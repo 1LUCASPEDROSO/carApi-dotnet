@@ -9,5 +9,6 @@ namespace CarsApi.Domain.Entities
     {
         public int Id { get; set; }
         public required String Name { get; set; }
+        public ICollection<Model>? Models { get; set; }
     }
 }
