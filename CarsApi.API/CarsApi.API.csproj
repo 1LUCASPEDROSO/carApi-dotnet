@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CarsApi.Application\CarsApi.Application.csproj" />
+    <ProjectReference Include="..\CarsApi.Infrastructure\CarsApi.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

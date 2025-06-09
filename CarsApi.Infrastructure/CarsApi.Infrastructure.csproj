@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CarsApi.Domain\CarsApi.Domain.csproj" />
+    <ProjectReference Include="..\CarsApi.Application\CarsApi.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>
