@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CarsApi.Domain.Entities;
-using CarsApi.Domain.Repositories;
+using CarsApi.Application.Interfaces;
 using CarsApi.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,7 +27,7 @@ namespace CarsApi.Infrastructure
 
         public async Task DeleteBrand(int Id)
         {
-             var brand = await context.Brands.FindAsync(Id);
+            var brand = await context.Brands.FindAsync(Id);
             if (brand != null)
             {
                 context.Brands.Remove(brand);
