@@ -1,4 +1,5 @@
-using CarsApi.Domain.Repositories;
+
+using CarsApi.Application.Interfaces;
 using CarsApi.Domain.Services;
 using CarsApi.Domain.Services.Impl;
 using CarsApi.Infrastructure;
@@ -15,6 +16,8 @@ options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")
 
 builder.Services.AddScoped<IBrandService, BrandService>();
 builder.Services.AddScoped<IBrandRepository, BrandRepository>();
+builder.Services.AddScoped<IModelService, ModelService>();
+builder.Services.AddScoped<IModelRepository, ModelRepository>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
