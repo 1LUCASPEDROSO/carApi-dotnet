@@ -5,6 +5,6 @@ using System.Threading.Tasks;
 
 namespace CarsApi.Application.DTOs.Create
 {
-    public record UpdateCarDto(int Id,long Timestamp_Cadaster, int Model_id, int Year, string Gas_type,int Num_doors, string Color);
+    public record UpdateCarDto(int Id,DateTime RegisterDate, int Model_id, int Year, string Gas_type,int Num_doors, string Color);
 
 }

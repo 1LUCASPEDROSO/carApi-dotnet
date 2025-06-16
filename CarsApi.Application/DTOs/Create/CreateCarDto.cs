@@ -5,6 +5,5 @@ using System.Threading.Tasks;
 
 namespace CarsApi.Application.DTOs.Create
 {
-    public record CreateCarDto(int Id,long Timestamp_Cadaster, int Model_id, int Year, string Gas_type,int Num_doors, string Color);
-
+    public record CreateCarDto(DateTime RegisterDate, int Model_id, int Year, string Gas_type,int Num_doors, string Color);
 }
