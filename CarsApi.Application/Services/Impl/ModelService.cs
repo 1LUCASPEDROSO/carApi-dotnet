@@ -81,7 +81,7 @@ namespace CarsApi.Domain.Services.Impl
             var model = await _Modelrepository.GetModelByName(name);
             if (model == null)
             {
-                throw new KeyNotFoundException("modelo inexistente");
+                return null;
             }
             return new ModelResponseDto(model.Id, model.Brand_id, model.Name, model.Fipe_value);
 
