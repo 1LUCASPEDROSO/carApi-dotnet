@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
+using CarsApi.Domain.Enums;
 
 namespace CarsApi.Domain.Entities
 {
@@ -12,7 +13,7 @@ namespace CarsApi.Domain.Entities
         public required  long Timestamp_Cadaster { get; set; }
         public required int  Model_id { get; set; }
         public required int Year { get; set; }
-        public required string Gas_type { get; set; }
+        public required Fuel_type Gas_type { get; set; }
         public required int Num_doors { get; set; }
         public string? Color { get; set; }
 
