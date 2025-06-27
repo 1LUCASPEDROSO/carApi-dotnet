@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace CarsApi.Application.DTOs
+namespace CarsApi.Application.DTOs.Update
 {
     public record BrandUpdateDto(int Id,string Name);
 }

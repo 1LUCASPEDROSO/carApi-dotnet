@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace CarsApi.Application.DTOs
+namespace CarsApi.Application.DTOs.Response
 {
     public record BrandResponseDto(int Id,string Name);
 }

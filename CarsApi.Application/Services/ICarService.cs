@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CarsApi.Application.DTOs.Create;
+using CarsApi.Application.DTOs.Response;
+using CarsApi.Application.DTOs.Update;
 
 namespace CarsApi.Application.Services
 {
