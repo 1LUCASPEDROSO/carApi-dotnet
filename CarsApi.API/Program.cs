@@ -9,19 +9,28 @@ using CarsApi.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
-                                        var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(args);
 
-                                        builder.Services.AddDbContext<AppDbContext>(options =>
-                                        options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<AppDbContext>(options =>
+options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-                                        builder.Services.AddScoped<IBrandService, BrandService>();
-                                        builder.Services.AddScoped<IBrandRepository, BrandRepository>();
-                                        builder.Services.AddScoped<IModelService, ModelService>();
-                                        builder.Services.AddScoped<IModelRepository, ModelRepository>();
-                                        builder.Services.AddScoped<ICarRepository, CarRepository>();
-                                        builder.Services.AddScoped<ICarService, CarService>();
+builder.Services.AddScoped<IBrandService, BrandService>();
+builder.Services.AddScoped<IBrandRepository, BrandRepository>();
+builder.Services.AddScoped<IModelService, ModelService>();
+builder.Services.AddScoped<IModelRepository, ModelRepository>();
+builder.Services.AddScoped<ICarRepository, CarRepository>();
+builder.Services.AddScoped<ICarService, CarService>();
 
-                                        builder.Services.AddControllers();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowLocalhostFrontend", policy =>
+    {
+        policy.AllowAnyOrigin() // coloque a porta do seu frontend
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -29,13 +38,13 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 var app = builder.Build();
-
+app.UseCors("AllowLocalhostFrontend");
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseMiddleware<GlobalMiddleware>();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();

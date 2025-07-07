@@ -34,7 +34,7 @@ namespace CarsApi.Infrastructure
 
         public Task<List<Car>> GetAllCarsAsync()
         {
-           return context.Cars.ToListAsync();
+            return context.Cars.ToListAsync();
         }
 
         public async Task<Car?> GetCarById(int Id)
@@ -46,6 +46,7 @@ namespace CarsApi.Infrastructure
         {
             var car = await context.Cars.FindAsync(Id);
             context.Cars.Entry(car).CurrentValues.SetValues(carUpdate);
+            await context.SaveChangesAsync();
             return car;
         }
     }

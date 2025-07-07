@@ -1,11 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using CarsApi.Application.DTOs.Create;
 using CarsApi.Application.Interfaces;
 using CarsApi.Domain.Entities;
-using CarsApi.Domain.Services;
 
 namespace CarsApi.Application.Services.Impl
 {
@@ -23,12 +18,35 @@ namespace CarsApi.Application.Services.Impl
         {
             if (dto.Model_id <= 0)
             {
-                throw new NotImplementedException("Model id is not 0");
+                throw AppExceptions.InvalidId("car");
             }
             if (!await VerifyModelExists(dto.Model_id))
             {
-                throw new NotImplementedException("Model not exists");
+                throw AppExceptions.NotFound("model");
             }
+            if (dto.Year < 1900 || dto.Year > DateTime.UtcNow.Year + 1)
+            {
+                throw AppExceptions.InvalidField("Year");
+            }
+            if (!Enum.IsDefined(dto.Gas_type))
+            {
+                throw AppExceptions.InvalidField("Gas_type");
+            }
+            if (dto.Num_doors < 2 || dto.Num_doors > 5)
+            {
+                throw AppExceptions.InvalidField("Num_doors");
+            }
+
+            if (dto.Color == null || string.IsNullOrWhiteSpace(dto.Color))
+            {
+                throw AppExceptions.InvalidField("Color");
+            }
+
+            if (dto.RegisterDate > DateTime.UtcNow)
+            {
+                throw AppExceptions.InvalidField("RegisterDate");
+            }
+
             var car = new Car { Timestamp_Cadaster = ToUnixTimestamp(dto.RegisterDate), Model_id = dto.Model_id, Year = dto.Year, Gas_type = dto.Gas_type, Num_doors = dto.Num_doors, Color = dto.Color };
             var createdCar = await _carRepository.AddCar(car);
             return new ResponseCarDto(
@@ -46,11 +64,11 @@ namespace CarsApi.Application.Services.Impl
         {
             if (Id <= 0)
             {
-                throw new NotImplementedException("Id < 0 not exists");
+                throw AppExceptions.InvalidId("car");
             }
             if (!await VerifyCarExitsById(Id))
             {
-                throw new NotImplementedException("Id not exists");
+                throw AppExceptions.NotFound("car");
             }
             await _carRepository.DeleteCar(Id);
             return;
@@ -59,10 +77,6 @@ namespace CarsApi.Application.Services.Impl
         public async Task<List<ResponseCarDto>> GetAllCars()
         {
             var cars = await _carRepository.GetAllCarsAsync();
-            if (cars == null)
-            {
-                throw new NotImplementedException("Cars not exists");
-            }
             return cars.Select(c => new ResponseCarDto(c.Id, FromUnixTimestamp(c.Timestamp_Cadaster), c.Model_id, c.Year, c.Gas_type, c.Num_doors, c.Color)).ToList();
         }
 
@@ -70,12 +84,12 @@ namespace CarsApi.Application.Services.Impl
         {
             if (Id <= 0)
             {
-                throw new NotImplementedException("Id < 0 not exists");
+                throw AppExceptions.InvalidId("car");
             }
             var Car = await _carRepository.GetCarById(Id);
             if (Car == null)
-            { 
-               throw new NotImplementedException("Car not exists"); 
+            {
+                throw AppExceptions.NotFound("car");
             }
             return new ResponseCarDto(
                 Car.Id,
@@ -92,18 +106,19 @@ namespace CarsApi.Application.Services.Impl
         {
             if (updateDto.Id <= 0)
             {
-                throw new NotImplementedException("Id <0 not exists");
+                throw AppExceptions.InvalidId("car");
             }
             if (!await VerifyModelExists(updateDto.Model_id))
             {
-                throw new NotImplementedException("Model not exists");
+                throw AppExceptions.NotFound("model");
             }
             if (!await VerifyCarExitsById(updateDto.Id))
-            { 
-                throw new NotImplementedException("Car not exists");
+            {
+                throw AppExceptions.NotFound("car");
             }
             var updateCar = new Car
-            {
+            {   
+                Id = updateDto.Id,
                 Timestamp_Cadaster = ToUnixTimestamp(updateDto.RegisterDate),
                 Model_id = updateDto.Model_id,
                 Year = updateDto.Year,
@@ -127,7 +142,7 @@ namespace CarsApi.Application.Services.Impl
         {
             var model = await _modelRepository.GetModelById(model_id);
             return model != null;
-           
+
         }
         private static DateTime FromUnixTimestamp(long timestamp)
         {
