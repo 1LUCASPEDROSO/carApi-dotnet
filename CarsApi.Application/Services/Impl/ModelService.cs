@@ -3,6 +3,7 @@ using CarsApi.Application.Interfaces;
 using CarsApi.Application.DTOs.Response;
 using CarsApi.Application.DTOs.Create;
 using CarsApi.Application.DTOs.Update;
+using CarsApi.Application;
 
 namespace CarsApi.Domain.Services.Impl
 {
@@ -20,18 +21,18 @@ namespace CarsApi.Domain.Services.Impl
         public async Task<ModelResponseDto> AddModel(ModelCreateDto dto)
         {
             if (string.IsNullOrWhiteSpace(dto.Name))
-                throw new ArgumentNullException(nameof(dto.Name), "Nome é obrigatório");
+                throw AppExceptions.InvalidField("name");
 
             if (dto.Fipe_value <= 0)
-                throw new ArgumentException("Fipe_value deve ser maior que 0");
+                throw AppExceptions.InvalidField("fipe_value");
 
             if (dto.Brand_id <= 0)
-                throw new ArgumentException("Brand_id inválido");
+                throw AppExceptions.InvalidId("model");
 
             var brand = await _brandRepository.GetBrandById(dto.Brand_id);
             if (brand == null)
             {
-                throw new KeyNotFoundException("Marca inexistente");
+                throw AppExceptions.NotFound("model");
             }
             var model = new Model { Name = dto.Name, Fipe_value = dto.Fipe_value, Brand_id = dto.Brand_id };
             var createdModel = await _Modelrepository.AddModel(model);
@@ -42,12 +43,12 @@ namespace CarsApi.Domain.Services.Impl
         {
             if (Id <= 0)
             {
-                throw new ArgumentException("Id inexistente");
+                throw AppExceptions.InvalidId("model");
             }
             var model = await _Modelrepository.GetModelById(Id);
             if (model == null)
             {
-                throw new KeyNotFoundException("modelo inexistente");
+                throw AppExceptions.NotFound("model");
             }
             await _Modelrepository.DeleteModel(Id);
         }
@@ -62,12 +63,12 @@ namespace CarsApi.Domain.Services.Impl
         {
             if (Id <= 0)
             {
-                throw new ArgumentException("Id inexistente");
+                throw AppExceptions.InvalidId("model");
             }
             var model = await _Modelrepository.GetModelById(Id);
             if (model == null)
             {
-                throw new KeyNotFoundException("modelo inexistente");
+                throw AppExceptions.NotFound("model");
             }
             return new ModelResponseDto(model.Id, model.Brand_id, model.Name, model.Fipe_value); 
         }
@@ -76,7 +77,7 @@ namespace CarsApi.Domain.Services.Impl
         {
             if (string.IsNullOrEmpty(name))
             {
-                throw new ArgumentNullException("Nome nulo ou invalido");
+                throw AppExceptions.InvalidField("name");
             }
             var model = await _Modelrepository.GetModelByName(name);
             if (model == null)
@@ -96,9 +97,9 @@ namespace CarsApi.Domain.Services.Impl
             var brand = await _brandRepository.GetBrandById(updateDto.Brand_id);
             if (brand == null)
             {
-                throw new KeyNotFoundException("marca inexistente");
+                throw AppExceptions.NotFound("model");
             }
-            var updatedModel = new Model { Brand_id = updateDto.Brand_id, Name = updateDto.Name, Fipe_value = updateDto.Fipe_value };
+            var updatedModel = new Model { Id = updateDto.Id, Brand_id = updateDto.Brand_id, Name = updateDto.Name, Fipe_value = updateDto.Fipe_value };
             var model = await _Modelrepository.UpdateModel(updateDto.Id, updatedModel);
             return new ModelUpdateDto(model.Id, model.Fipe_value, model.Name, model.Brand_id);
         }
