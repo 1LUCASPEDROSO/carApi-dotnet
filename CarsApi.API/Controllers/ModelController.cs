@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using CarsApi.Application.DTOs.Create;
 using CarsApi.Application.DTOs.Update;
 using CarsApi.Domain.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarsApi.API.Controllers
@@ -40,13 +41,14 @@ namespace CarsApi.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetModelByName(String name)
+        public async Task<IActionResult> GetModelByName(string name)
         {
             var model = await _modelService.GetModelByName(name);
             return Ok(model);
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin,model-manager")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -56,6 +58,7 @@ namespace CarsApi.API.Controllers
             return Ok(model);
         }
         [HttpPut]
+        [Authorize(Roles = "admin,model-manager")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UpdateModel(ModelUpdateDto dto)
@@ -64,11 +67,12 @@ namespace CarsApi.API.Controllers
             return Ok(updatedModel);
         }
         [HttpDelete("{id}")]
+        [Authorize(Roles = "admin,model-manager")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> DeleteModel(int Id)
+        public async Task<IActionResult> DeleteModel(int id)
         {
-            await _modelService.DeleteModel(Id);
+            await _modelService.DeleteModel(id);
             return Ok();
         }
     }
