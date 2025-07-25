@@ -16,6 +16,8 @@ namespace CarsApi.Infrastructure.Persistence
         public DbSet<Brand> Brands => Set<Brand>();
         public DbSet<Model> Models => Set<Model>();
         public DbSet<Car> Cars => Set<Car>();
-        
+        public DbSet<User> Users => Set<User>();
+        public DbSet<Role> Roles => Set<Role>();
+        public DbSet<UserRole> UserRoles => Set <UserRole>();
     }
 }
