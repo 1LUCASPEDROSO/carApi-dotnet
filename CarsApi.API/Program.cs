@@ -1,4 +1,5 @@
 
+using System.Security.Claims;
 using System.Text;
 using System.Text.RegularExpressions;
 using CarsApi.Application.Interfaces;
@@ -56,7 +57,7 @@ builder.Services.AddAuthentication("Bearer")
     ValidateLifetime = true,
     ValidateIssuerSigningKey = true,
     IssuerSigningKey = new SymmetricSecurityKey(key),
-    RoleClaimType = "roles" // opcional, mas importante para múltiplas roles
+    RoleClaimType = ClaimTypes.Role // opcional, mas importante para múltiplas roles
 };
 
     });
