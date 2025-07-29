@@ -34,8 +34,8 @@ namespace CarsApi.Application.Services.Impl
                )).ToList();
             return new ResponseAuthDto(
                 user.Id,
-                user.Email,
                 user.Name,
+                user.Email,
                 dtoListRole
             ); 
         }
