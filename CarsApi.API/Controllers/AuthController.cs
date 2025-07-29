@@ -34,7 +34,7 @@ namespace CarsApi.API.Controllers
                 user.Roles
             );
             var token = tokenService.Generate(filtredUser);
-            return Ok(token);
+            return Ok(new { token });
         }
     }
 }
