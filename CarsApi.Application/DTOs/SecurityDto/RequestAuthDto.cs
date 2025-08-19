@@ -5,5 +5,5 @@ using System.Threading.Tasks;
 
 namespace CarsApi.Application.DTOs.SecurityDto
 {
-    public record RequestAuthDto(string Email,string Passowrd);
+    public record RequestAuthDto(string Email,string Password);
 }
