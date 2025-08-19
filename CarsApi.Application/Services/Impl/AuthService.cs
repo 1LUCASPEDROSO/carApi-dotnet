@@ -22,7 +22,7 @@ namespace CarsApi.Application.Services.Impl
 
         public async Task<ResponseAuthDto?> GetUserByLogin(RequestAuthDto dto)
         {
-            var user = await userRepository.GetUserByLogin(dto.Email, dto.Passowrd);
+            var user = await userRepository.GetUserByLogin(dto.Email, dto.Password);
             if (user == null)
             {
                 AppExceptions.NotFound("user");
