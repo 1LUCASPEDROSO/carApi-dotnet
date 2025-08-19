@@ -26,6 +26,11 @@ namespace CarsApi.Domain.Services.Impl
             {
                 throw AppExceptions.InvalidField("name");
             }
+            var brandResponse = await _brandRepository.GetBrandByName(dto.Name);
+            if (brandResponse != null)
+            {
+                throw AppExceptions.Conflict(dto.Name);
+            }
             var brand = new Brand { Name = dto.Name };
             var createdBrand = await _brandRepository.AddBrand(brand);
             return new BrandResponseDto(createdBrand.Id,createdBrand.Name);
